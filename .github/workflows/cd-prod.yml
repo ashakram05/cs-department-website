@@ -1,0 +1,27 @@
+name: CD — Production
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy-production:
+    name: Deploy to Production (Render)
+    runs-on: ubuntu-latest
+    environment: production    # GitHub Environment with protected secrets + approval gates
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Trigger Render Deploy (Production)
+        run: |
+          curl -s -X POST \
+            "https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID_PROD }}?key=${{ secrets.RENDER_DEPLOY_KEY_PROD }}" \
+            -d ''
+
+      - name: Deployment notification
+        run: |
+          echo "🚀 Deployed to PRODUCTION environment"
+          echo "Branch: ${{ github.ref_name }}"
+          echo "Commit: ${{ github.sha }}"

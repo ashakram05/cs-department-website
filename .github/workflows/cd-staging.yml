@@ -1,0 +1,27 @@
+name: CD — Staging/QA
+
+on:
+  push:
+    branches: [ 'release/**' ]
+
+jobs:
+  deploy-staging:
+    name: Deploy to Staging/QA (Render)
+    runs-on: ubuntu-latest
+    environment: staging    # GitHub Environment with protected secrets
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Trigger Render Deploy (Staging)
+        run: |
+          curl -s -X POST \
+            "https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID_STAGING }}?key=${{ secrets.RENDER_DEPLOY_KEY_STAGING }}" \
+            -d ''
+
+      - name: Deployment notification
+        run: |
+          echo "✅ Deployed to STAGING/QA environment"
+          echo "Branch: ${{ github.ref_name }}"
+          echo "Commit: ${{ github.sha }}"

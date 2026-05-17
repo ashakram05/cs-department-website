@@ -1,0 +1,27 @@
+name: CD — Development
+
+on:
+  push:
+    branches: [ develop ]
+
+jobs:
+  deploy-dev:
+    name: Deploy to Development (Render)
+    runs-on: ubuntu-latest
+    environment: development   # GitHub Environment with protected secrets
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Trigger Render Deploy (Development)
+        run: |
+          curl -s -X POST \
+            "https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID_DEV }}?key=${{ secrets.RENDER_DEPLOY_KEY_DEV }}" \
+            -d ''
+
+      - name: Deployment notification
+        run: |
+          echo "✅ Deployed to DEVELOPMENT environment"
+          echo "Branch: ${{ github.ref_name }}"
+          echo "Commit: ${{ github.sha }}"
