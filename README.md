@@ -106,15 +106,7 @@ For each GitHub Environment (`development`, `staging`, `production`), add these 
 
 ---
 
-## 👥 Team
 
-| Name | Roll No | Page |
-|------|---------|------|
-| Team Lead | — | Home Page |
-| Member 2  | — | Courses Page |
-| Member 3  | — | Faculty Page |
-| Member 4  | — | Admissions Page |
-| Member 5  | — | Contact Page |
 
 ---
 
